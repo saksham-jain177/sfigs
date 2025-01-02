@@ -1,40 +1,42 @@
-import NextAuth, { DefaultSession } from "next-auth"
+import NextAuth, { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
-    /**
-     * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-     */
-    interface Session {
-        accessToken?: string
-        user: {
-            email: string
-        } & DefaultSession["user"]
-    }
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    accessToken?: string;
+    user: {
+      email: string;
+      mostUsedLanguage?: string; 
+    } & DefaultSession["user"];
+  }
 
-    /**
-     * The shape of the user object returned in the OAuth providers' `profile` callback,
-     * or the second parameter of the `session` callback, when using a database.
-     */
-    interface User {
-        email: string
-        name: string
-    }
+  /**
+   * The shape of the user object returned in the OAuth providers' `profile` callback,
+   * or the second parameter of the `session` callback, when using a database.
+   */
+  interface User {
+    email: string;
+    name: string;
+    mostUsedLanguage?: string; 
+  }
 
-    interface GhExtendedProfile extends Profile {
-        email: string
-        login: string
-        avatar_url: string
-        [key]?: string
-    }
+  interface GhExtendedProfile extends Profile {
+    email: string;
+    login: string;
+    avatar_url: string;
+    [key: string]: string | undefined;
+  }
 }
 
 declare global {
-    namespace NodeJS {
-        interface ProcessEnv {
-            GITHUB_ID: string
-            GITHUB_SECRET: string
-            NEXTAUTH_URL: string
-            NEXTAUTH_SECRET: string
-        }
+  namespace NodeJS {
+    interface ProcessEnv {
+      GITHUB_ID: string;
+      GITHUB_SECRET: string;
+      NEXTAUTH_URL: string;
+      NEXTAUTH_SECRET: string;
     }
+  }
 }
